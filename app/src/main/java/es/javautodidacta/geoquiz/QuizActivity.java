@@ -1,11 +1,11 @@
 package es.javautodidacta.geoquiz;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,8 +13,6 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
-    private ImageButton mNextButton;
-    private ImageButton mPreviousButton;
     private TextView mQuestionTextView;
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.canberra_is_the_capital_of_australia, true),
@@ -25,28 +23,30 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_asia, true),
     };
     private int mCurrentIndex = 0;
+    private int mRightAnswers = 0;
+
+    private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        mQuestionTextView = findViewById(R.id.question_text_view);
-        mQuestionTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCurrentIndex = ++mCurrentIndex % mQuestionBank.length;
-                updateQuestion();
-            }
-        });
+        Log.d(TAG, "onCreate(Bundle) called");
 
-        updateQuestion();
+        mQuestionTextView = findViewById(R.id.question_text_view);
+
+        if(savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
 
         mTrueButton = findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkAnswers(true);
+                hideButtons();
             }
         });
 
@@ -55,34 +55,47 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswers(false);
+                hideButtons();
             }
         });
 
-        mNextButton = findViewById(R.id.next_button);
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCurrentIndex = ++mCurrentIndex % mQuestionBank.length;
-                updateQuestion();
-            }
-        });
+        updateQuestion();
+    }
 
-        mPreviousButton = findViewById(R.id.previous_button);
-        mPreviousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCurrentIndex = --mCurrentIndex % mQuestionBank.length;
-                updateQuestion();
-            }
-        });
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState");
+        outState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+
+    private void hideButtons() {
+        mFalseButton.setVisibility(View.INVISIBLE);
+        mTrueButton.setVisibility(View.INVISIBLE);
+
+        mCurrentIndex++;
+        updateQuestion();
+    }
+
+    private void showButtons() {
+        mFalseButton.setVisibility(View.VISIBLE);
+        mTrueButton.setVisibility(View.VISIBLE);
     }
 
     /**
      * Updates question shown adding 1 to current index.
      */
     private void updateQuestion() {
-        int question = mQuestionBank[mCurrentIndex].getTextResId();
-        mQuestionTextView.setText(question);
+        if(mCurrentIndex < mQuestionBank.length) {
+            int question = mQuestionBank[mCurrentIndex].getTextResId();
+            mQuestionTextView.setText(question);
+            showButtons();
+        } else {
+            int porcentaje = 100 / mRightAnswers;
+            Toast.makeText(this, porcentaje + "% RIGHT", Toast.LENGTH_SHORT).show();
+            mQuestionTextView.setText(porcentaje + "% RIGHT");
+            mQuestionTextView.setTextColor(Color.BLUE);
+        }
     }
 
     /**
@@ -95,10 +108,12 @@ public class QuizActivity extends AppCompatActivity {
 
         if(userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct;
+            mRightAnswers++;
         } else {
             messageResId = R.string.incorrect;
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+
     }
 }
