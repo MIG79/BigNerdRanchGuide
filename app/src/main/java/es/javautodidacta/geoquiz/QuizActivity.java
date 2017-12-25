@@ -2,6 +2,7 @@ package es.javautodidacta.geoquiz;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,7 +21,9 @@ public class QuizActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(QuizActivity.this, R.string.incorrect, Toast.LENGTH_SHORT).show();
+                Toast toastTrue = Toast.makeText(QuizActivity.this, R.string.incorrect, Toast.LENGTH_SHORT);
+                toastTrue.setGravity(Gravity.TOP | Gravity.END, 0, 0);
+                toastTrue.show();
             }
         });
 
@@ -28,7 +31,9 @@ public class QuizActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(QuizActivity.this, R.string.correct, Toast.LENGTH_SHORT).show();
+                Toast toastFalse = Toast.makeText(QuizActivity.this, R.string.correct, Toast.LENGTH_SHORT);
+                toastFalse.setGravity(Gravity.TOP | Gravity.END, 0, 0);
+                toastFalse.show();
             }
         });
     }
