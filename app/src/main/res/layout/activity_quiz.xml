@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    style="?android:attr/buttonBarStyle"
     android:orientation="vertical">
 
     <TextView
@@ -16,24 +15,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/true_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/true_button"/>
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/false_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/false_button"/>
     </LinearLayout>
 
-    <Button
-        style="?android:attr/buttonBarButtonStyle"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <ImageButton
+        android:contentDescription="@string/previous_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/previous_button"
+        android:src="@drawable/arrow_left" />
+
+    <ImageButton
+        android:contentDescription="@string/next_answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/next_button"
-        android:text="@string/next"/>
-
+        android:src="@drawable/arrow_right" />
+    </LinearLayout>
 </LinearLayout>

@@ -12,4 +12,7 @@
     <string name="incorrect">Incorrect</string>
     <string name="correct">Correct</string>
     <string name="next">Next</string>
+    <string name="previous">Prev</string>
+    <string name="previous_answer">Previous answer</string>
+    <string name="next_answer">Next answer</string>
 </resources>
