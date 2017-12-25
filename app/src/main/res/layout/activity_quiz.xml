@@ -3,17 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    style="?android:attr/buttonBarStyle"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:text="@string/canberra_is_the_capital_of_australia" />
+        android:id="@+id/question_text_view"
+        android:padding="24dp" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?android:attr/buttonBarStyle"
         android:orientation="horizontal">
         <Button
             style="?android:attr/buttonBarButtonStyle"
@@ -28,5 +28,12 @@
             android:layout_height="wrap_content"
             android:text="@string/false_button"/>
     </LinearLayout>
+
+    <Button
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/next_button"
+        android:text="@string/next"/>
 
 </LinearLayout>
