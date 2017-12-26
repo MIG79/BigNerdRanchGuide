@@ -1,5 +1,6 @@
 package es.javautodidacta.geoquiz;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
+    private Button mCheatButton;
     private TextView mQuestionTextView;
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.canberra_is_the_capital_of_australia, true),
@@ -40,6 +42,15 @@ public class QuizActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
+
+        mCheatButton = findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QuizActivity.this, CheatActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mTrueButton = findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +102,7 @@ public class QuizActivity extends AppCompatActivity {
             mQuestionTextView.setText(question);
             showButtons();
         } else {
-            int porcentaje = 100 / mRightAnswers;
+            int porcentaje = (100 / mQuestionBank.length) * mRightAnswers;
             Toast.makeText(this, porcentaje + "% RIGHT", Toast.LENGTH_SHORT).show();
             mQuestionTextView.setText(porcentaje + "% RIGHT");
             mQuestionTextView.setTextColor(Color.BLUE);
