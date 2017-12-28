@@ -33,6 +33,7 @@ public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
     private static final int REQUEST_CODE_CHEAT = 0;
+    static int tries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
