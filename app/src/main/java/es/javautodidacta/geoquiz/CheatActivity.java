@@ -21,6 +21,7 @@ public class CheatActivity extends AppCompatActivity {
     private static final String KEY_INDEX = "index";
     private static final String KEY_INDEX_INT = "index_int";
     private static final String KEY_ANSWER = "key_answer";
+    private static final String HIDDEN_BUTTON = "hidden_button";
 
     private TextView mAnswerTextView;
     private Button mShowAnswerButton;
@@ -33,20 +34,26 @@ public class CheatActivity extends AppCompatActivity {
 
         mApiLevel = findViewById(R.id.API_level);
         mAnswerTextView = findViewById(R.id.answer_text_view);
+        mShowAnswerButton = findViewById(R.id.show_answer_button);
 
         if(savedInstanceState != null) {
             mAnswerIsTrue = savedInstanceState.getBoolean(KEY_INDEX, false);
             QuizActivity.tries = savedInstanceState.getInt(KEY_INDEX_INT, 0);
-            mApiLevel.setText("Tries: " + QuizActivity.tries);
+
+            if(QuizActivity.tries <= 3) {
+                mApiLevel.setText("Tries: " + QuizActivity.tries);
+            }
+            
             String answer = savedInstanceState.getString(KEY_ANSWER, "");
             mAnswerTextView.setText(answer);
+            boolean hiddenButton = savedInstanceState.getBoolean(HIDDEN_BUTTON, false);
+            if(hiddenButton) mShowAnswerButton.setVisibility(View.INVISIBLE);
 
         } else {
             mAnswerIsTrue = getIntent()
                     .getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
         }
 
-        mShowAnswerButton = findViewById(R.id.show_answer_button);
         mShowAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,5 +121,6 @@ public class CheatActivity extends AppCompatActivity {
         outState.putBoolean(KEY_INDEX, mAnswerIsTrue);
         outState.putInt(KEY_INDEX_INT, QuizActivity.tries);
         outState.putString(KEY_ANSWER, mAnswerTextView.getText().toString());
+        outState.putBoolean(HIDDEN_BUTTON, mShowAnswerButton.getVisibility() == View.INVISIBLE);
     }
 }
